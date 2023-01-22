@@ -1,21 +1,19 @@
-import express, {Request, Response} from "express";
-import config from './config'
-import { fileData, addRegistry } from "./data/microservices/file";
+import express,{Router} from "express";
+import Server from "./rest-server/server/server";
+import router from "./rest-server/routes/gateway.routes";
+import serviceRouter from "./rest-server/routes/microservice.routes";
+import container from "./config/container";
 
 
+let repo = container.microServiceRepository;
 
-const server = express();
 
-server.use(express.json());
+const server = Server.instace;
+const eRouter = Router()
+router.use(express.json())
+server.use(eRouter)
 
-//addRegistry();
+server.use(router);
+server.use(serviceRouter);
 
-server.all("/api/:value", (req:Request, resp:Response)=>{
-  console.log(req.socket.address())
-  
-  resp.send("Api response service")
-})
-server.listen(config.server.port, ()=>{
-  console.log(`Server running on port ${config.server.port}`)
-})
-
+server.start(3005);

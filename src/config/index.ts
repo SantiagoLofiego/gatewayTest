@@ -1,9 +1,11 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
+//console.log(process.env)
+
 const config = {
   server: {
-    port: process.env.SERVER_PORT
+    port: parseInt(process.env.SERVER_PORT || '3000') 
   },
   data:{
     userMysql:{
